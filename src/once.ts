@@ -37,7 +37,7 @@ const duneApiKey: string = process.env.DUNE_API_KEY || panic("missing DUNE_API_K
 // const lusdTotalSupplyFile = path.join(OUTPUT_DIR_V1, LUSD_TOTAL_SUPPLY_FILE);
 // const lusdCBBAMMStatsFile = path.join(OUTPUT_DIR_V1, LUSD_CB_BAMM_STATS_FILE);
 
-const arbitrumProvider = getProvider("arbitrum", { alchemyApiKey });
+const gnosisProvider = getProvider("gnosis", { alchemyApiKey });
 
 interface Tree extends Record<string, string | Tree> {}
 
@@ -60,7 +60,7 @@ async function main() {
     // lqtyCirculatingSupply,
     // lusdTotalSupply,
     // lusdCBBAMMStats,
-    v2ProdStats,
+    v2ProdStats
     // prices
   ] = await Promise.all([
     // fetchLQTYCirculatingSupply(liquity),
@@ -68,16 +68,16 @@ async function main() {
     // fetchLUSDCBBAMMStats(transposeApiKey),
     fetchV2Stats({
       deployment: v2ProdDeployment,
-      provider: arbitrumProvider,
+      provider: gnosisProvider,
       duneSpApyUrl: DUNE_SPV2_AVERAGE_APY_URL_MAINNET,
       duneSpUpfrontFeeUrl: DUNE_SPV2_UPFRONT_FEE_URL_MAINNET,
       duneApiKey
-    }),
+    })
     // fetchPrices({ coinGeckoDemoApiKey })
   ]);
 
   const v2Stats = {
-    ...v2ProdStats,
+    ...v2ProdStats
     // prices
   };
 
@@ -88,19 +88,17 @@ async function main() {
 
   writeTree(OUTPUT_DIR_V2, v2Stats);
   fs.writeFileSync(
-    path.join(OUTPUT_DIR_V2, "arbitrum.json"),
+    path.join(OUTPUT_DIR_V2, "gnosis.json"),
     JSON.stringify({ ...v2ProdStats }, null, 2)
   );
 
   // console.log(`LQTY circulating supply: ${lqtyCirculatingSupply}`);
   // console.log(`LUSD total supply: ${lusdTotalSupply}`);
   // console.log("LUSD CB BAMM stats:", lusdCBBAMMStats);
-  console.log();
   console.log("v2 stats:", util.inspect(v2Stats, { colors: true, depth: null }));
 }
 
-main()
-  .catch(error => {
-    console.error(error);
-    process.exit(1);
-  });
+main().catch(error => {
+  console.error(error);
+  process.exit(1);
+});

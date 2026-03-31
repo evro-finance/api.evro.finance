@@ -28,7 +28,7 @@ const fetchBranchData = async (
           .fetchPrice({ blockTag })
           .then(([x]) => x)
           .then(decimalify),
-        sp_deposits: branch.stabilityPool.getTotalBoldDeposits({ blockTag }).then(decimalify),
+        sp_deposits: branch.stabilityPool.getTotalEvroDeposits({ blockTag }).then(decimalify),
         interest_accrual_1y: branch.activePool
           .aggWeightedDebtSum({ blockTag })
           .then(decimalify)
@@ -100,6 +100,10 @@ const fetchSpAverageApysFromDune = async ({
   return Object.fromEntries(
     branches.map(branch => {
       const apys = sevenDaysApys.filter(row => row.collateral_type === branch.collSymbol);
+      if (apys.length === 0) {
+        return [branch.collSymbol, { apy_avg_1d: NaN, apy_avg_7d: NaN }];
+      }
+
       return [
         branch.collSymbol,
         {
@@ -165,12 +169,12 @@ export const fetchV2Stats = async ({
   const contracts = getContracts(provider, deployment);
 
   // Last step of deployment renounces Governance ownership
-  const deployed = await contracts.governance
-    .owner()
-    .then(owner => owner == AddressZero)
-    .catch(() => false);
+  // const deployed = await contracts.governance
+  //   .owner()
+  //   .then(owner => owner == AddressZero)
+  //   .catch(() => false);
 
-  console.log("deployed", deployed);
+  // console.log("deployed", deployed);
 
   const [total_bold_supply, branches, spV2AverageApys, spUpfrontFee24h] = await Promise.all([
     // total_bold_supply
