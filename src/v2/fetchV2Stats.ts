@@ -60,7 +60,7 @@ const isDuneSpAverageApyResponse = (
   data: unknown
 ): data is DuneResponse<{
   apr: number;
-  collateral_type: string;
+  collateral_symbol: string;
 }> =>
   isDuneResponse(data) &&
   data.result.rows.length > 0 &&
@@ -99,7 +99,7 @@ const fetchSpAverageApysFromDune = async ({
 
   return Object.fromEntries(
     branches.map(branch => {
-      const apys = sevenDaysApys.filter(row => row.collateral_type === branch.collSymbol);
+      const apys = sevenDaysApys.filter(row => row.collateral_symbol === branch.collSymbol);
       if (apys.length === 0) {
         return [branch.collSymbol, { apy_avg_1d: NaN, apy_avg_7d: NaN }];
       }
@@ -124,7 +124,7 @@ const fetchSpAverageApysFromDune = async ({
 const isDuneSpUpfrontFeeResponse = (
   data: unknown
 ): data is DuneResponse<{
-  collateral_type: string;
+  collateral_symbol: string;
   upfront_fees: number;
 }> =>
   isDuneResponse(data) &&
@@ -132,8 +132,8 @@ const isDuneSpUpfrontFeeResponse = (
     row =>
       typeof row === "object" &&
       row !== null &&
-      "collateral_type" in row &&
-      typeof row.collateral_type === "string" &&
+      "collateral_symbol" in row &&
+      typeof row.collateral_symbol === "string" &&
       "upfront_fees" in row &&
       typeof row.upfront_fees === "number"
   );
@@ -147,7 +147,7 @@ const fetchSpUpfrontFeeFromDune = async ({
 }) => {
   if (!url) return null;
   const { result } = await duneFetch({ apiKey, url, validate: isDuneSpUpfrontFeeResponse });
-  return Object.fromEntries(result.rows.map(row => [row.collateral_type, row.upfront_fees]));
+  return Object.fromEntries(result.rows.map(row => [row.collateral_symbol, row.upfront_fees]));
 };
 
 export const fetchV2Stats = async ({
