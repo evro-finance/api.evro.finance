@@ -5,13 +5,12 @@ env:
   FORCE_COLOR: true
 
 on:
-  # push:
-  #   branches: [main]
-  # pull_request:
-  #   branches: [main]
   workflow_dispatch:
   schedule:
-    - cron: "0 0 * * *"
+    - cron: "17 0 * * *"
+
+permissions:
+  contents: write
 
 jobs:
   lqty-supply:
@@ -20,17 +19,16 @@ jobs:
 
     steps:
       - name: Checkout source
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           submodules: true
 
       - name: Setup Node.js & Yarn
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: 20
           cache: yarn
         env:
-          # Workaround for https://github.com/actions/setup-node/issues/317
           FORCE_COLOR: 0
 
       - name: Install dependencies
@@ -41,12 +39,9 @@ jobs:
         env:
           ALCHEMY_API_KEY: ${{ secrets.ALCHEMY_API_KEY }}
           DUNE_API_KEY: ${{ secrets.DUNE_API_KEY }}
-          # TRANSPOSE_API_KEY: ${{ secrets.TRANSPOSE_API_KEY }}
-          # COINGECKO_DEMO_KEY: ${{ secrets.COINGECKO_DEMO_KEY }}
 
       - name: Commit generated files
         uses: EndBug/add-and-commit@v9
-        if: ${{ github.event_name != 'pull_request' }}
         with:
           message: "chore: update generated files"
           default_author: github_actions
