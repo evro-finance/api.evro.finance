@@ -68,10 +68,10 @@ export interface PriceFeed {
   };
 }
 
-const stabilityPoolAbi = ["function getTotalBoldDeposits() view returns (uint256)"];
+const stabilityPoolAbi = ["function getTotalEvroDeposits() view returns (uint256)"];
 
 export interface StabilityPool {
-  getTotalBoldDeposits(overrides?: CallOverrides): Promise<BigNumber>;
+  getTotalEvroDeposits(overrides?: CallOverrides): Promise<BigNumber>;
 }
 
 const governanceAbi = ["function owner() view returns (address)"];

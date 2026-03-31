@@ -8,15 +8,15 @@ export const LQTY_CIRCULATING_SUPPLY_FILE = "lqty_circulating_supply.txt";
 export const LUSD_TOTAL_SUPPLY_FILE = "lusd_total_supply.txt";
 export const LUSD_CB_BAMM_STATS_FILE = "lusd_cb_bamm_stats.json";
 
-export const DUNE_SPV2_AVERAGE_APY_URL_MAINNET = "https://api.dune.com/api/v1/query/5482206/results";
-export const DUNE_SPV2_UPFRONT_FEE_URL_MAINNET = "https://api.dune.com/api/v1/query/5482325/results";
+export const DUNE_SPV2_AVERAGE_APY_URL_MAINNET = "https://api.dune.com/api/v1/query/6702057/results";
+export const DUNE_SPV2_UPFRONT_FEE_URL_MAINNET = "https://api.dune.com/api/v1/query/6932429/results";
 
 export const TOTAL_LQTY_SUPPLY = Decimal.from(100e6); // 100 million
 
 // { [coinGeckoId]: symbol }
 export const PRICES = {
-  "ethereum": "ETH",
-  "liquity": "LQTY",
+  ethereum: "ETH",
+  liquity: "LQTY",
   "liquity-bold": "LEGACY_BOLD",
   "liquity-bold-2": "BOLD",
   "liquity-usd": "LUSD",

@@ -14,7 +14,8 @@ export const getProvider = (
   networkish: Networkish,
   options?: LiquityConnectionOptions
 ): Provider => {
-  const network = getNetwork(networkish);
+  // Hardcoding in EVRO's chain ID for now
+  const network = getNetwork(100);
   const provider = new BatchedAlchemyProvider(network, options?.alchemyApiKey);
 
   provider.chainId = network.chainId;
